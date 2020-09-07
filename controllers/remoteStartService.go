@@ -7,7 +7,6 @@ import (
 	"strconv"
 
 	"github.com/astaxie/beego"
-	"github.com/astaxie/beego/orm"
 )
 
 type RemoteStartService struct {
@@ -24,13 +23,11 @@ func (c *RemoteStartService) StartService() {
 	remote_u := c.GetString("remote_u")
 	remote_p := c.GetString("remote_p")
 
-	o := orm.NewOrm()
-
-	sysMap := make(orm.Params)
-	o.Raw("SELECT s_name,s_value FROM lp_sys").RowsToMap(&sysMap, "s_name", "s_value")
+	remoteU := beego.AppConfig.String("remote::remote_u")
+	remoteP := beego.AppConfig.String("remote::remote_p")
 
 	//验证 远程帐号密码
-	if remote_u == sysMap["remote_u"] && remote_p == sysMap["remote_p"] {
+	if remote_u == remoteU && remote_p == remoteP {
 
 		//查询当前服务器类型
 		lpBrookServer := models.GetThisServerInfor()
@@ -74,13 +71,11 @@ func (c *RemoteStartService) UpdataServicePasswd() {
 	remote_u := c.GetString("remote_u")
 	remote_p := c.GetString("remote_p")
 
-	o := orm.NewOrm()
-
-	sysMap := make(orm.Params)
-	o.Raw("SELECT s_name,s_value FROM lp_sys").RowsToMap(&sysMap, "s_name", "s_value")
+	remoteU := beego.AppConfig.String("remote::remote_u")
+	remoteP := beego.AppConfig.String("remote::remote_p")
 
 	//验证 远程帐号密码
-	if remote_u == sysMap["remote_u"] && remote_p == sysMap["remote_p"] {
+	if remote_u == remoteU && remote_p == remoteP {
 
 		//查询当前服务器类型
 		lpBrookServer := models.GetThisServerInfor()
@@ -130,13 +125,11 @@ func (c *RemoteStartService) CloseServer() {
 	remote_u := c.GetString("remote_u")
 	remote_p := c.GetString("remote_p")
 
-	o := orm.NewOrm()
-
-	sysMap := make(orm.Params)
-	o.Raw("SELECT s_name,s_value FROM lp_sys").RowsToMap(&sysMap, "s_name", "s_value")
+	remoteU := beego.AppConfig.String("remote::remote_u")
+	remoteP := beego.AppConfig.String("remote::remote_p")
 
 	//验证 远程帐号密码
-	if remote_u == sysMap["remote_u"] && remote_p == sysMap["remote_p"] {
+	if remote_u == remoteU && remote_p == remoteP {
 
 		//查询当前服务器类型
 		lpBrookServer := models.GetThisServerInfor()
@@ -182,13 +175,11 @@ func (c *RemoteStartService) OpenServer() {
 	remote_u := c.GetString("remote_u")
 	remote_p := c.GetString("remote_p")
 
-	o := orm.NewOrm()
-
-	sysMap := make(orm.Params)
-	o.Raw("SELECT s_name,s_value FROM lp_sys").RowsToMap(&sysMap, "s_name", "s_value")
+	remoteU := beego.AppConfig.String("remote::remote_u")
+	remoteP := beego.AppConfig.String("remote::remote_p")
 
 	//验证 远程帐号密码
-	if remote_u == sysMap["remote_u"] && remote_p == sysMap["remote_p"] {
+	if remote_u == remoteU && remote_p == remoteP {
 
 		//查询当前服务器类型
 		lpBrookServer := models.GetThisServerInfor()

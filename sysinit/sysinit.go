@@ -18,6 +18,9 @@ func init() {
 	//初始化数据库
 	InitDatabase()
 
+	//初始化服务器信息
+	initServerInfo()
+
 	//查询当前服务器类型
 	lpBrookServer := models.GetThisServerInfor()
 

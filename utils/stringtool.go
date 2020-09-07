@@ -1,11 +1,13 @@
 package utils
 
-import "fmt"
-import "crypto/md5"
-import "math/rand"
-import "time"
-import "strconv"
-import "strings"
+import (
+	"crypto/md5"
+	"fmt"
+	"math/rand"
+	"strconv"
+	"strings"
+	"time"
+)
 
 //将字符串加密成 md5
 func String2md5(str string) string {

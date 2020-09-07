@@ -85,7 +85,7 @@ func OpenSocks5Server(uid int) error {
 	code := utils.CheckPort(portStr) //判断linux端口是否被占用
 	if code == 0 {
 		fmt.Println("Open:", portStr)
-		socks5Server, err := brook.NewSocks5Server(":"+portStr, "127.0.0.1", lpBrookUser.Name, lpBrookUser.Passwd, 0, 0) //创建服务
+		socks5Server, err := brook.NewSocks5Server(":"+portStr, "127.0.0.1", lpBrookUser.Email, lpBrookUser.ProxyPasswd, 0, 0) //创建服务
 		if err != nil {
 			panic("Socks5服务器开启时失败-" + err.Error())
 		}

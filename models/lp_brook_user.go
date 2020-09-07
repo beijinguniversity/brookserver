@@ -8,16 +8,18 @@ import (
 )
 
 type LpBrookUser struct {
-	Id         int       `orm:"column(u_id);auto"`
-	Email      string    `orm:"column(u_email);size(255)" description:"邮箱" valid:"Email; MaxSize(50)"`
-	Name       string    `orm:"column(u_name);size(255)" description:"用户名" valid:"Range(2, 20)"`
-	Passwd     string    `orm:"column(u_passwd);size(255)" description:"密码" valid:"Range(6, 20)"`
-	Port       int       `orm:"column(u_port);size(255)" description:"端口"`
-	Flow       float64   `orm:"column(u_flow);digits(40);decimals(5)" description:"剩余流量"`
-	IsAdmin    int       `orm:"column(u_is_admin)" description:"是否是管理员 0普通用户/1管理员/-1停用"`
-	ExpireTime time.Time `orm:"column(expire_time);type(timestamp);" description:"vip到期时间"`
-	FlowTotal  float64   `orm:"column(u_flow_total);digits(40);decimals(5)" description:"总使用流量"`
-	Money      int       `orm:"column(u_money)" description:"金币 100 = 1元"`
+	Id          int       `orm:"column(u_id);auto"`
+	Email       string    `orm:"column(u_email);size(255)" description:"邮箱" valid:"Email; MaxSize(50)"`
+	Name        string    `orm:"column(u_name);size(255)" description:"用户名" valid:"Range(2, 20)"`
+	Passwd      string    `orm:"column(u_passwd);size(255)" description:"密码" valid:"Length(32)"`
+	Port        int       `orm:"column(u_port);size(255)" description:"端口"`
+	Flow        float64   `orm:"column(u_flow);digits(40);decimals(5)" description:"剩余流量"`
+	IsAdmin     int       `orm:"column(u_is_admin)" description:"是否是管理员 0普通用户/1管理员/-1停用"`
+	ExpireTime  time.Time `orm:"column(expire_time);type(timestamp);" description:"vip到期时间"`
+	FlowTotal   float64   `orm:"column(u_flow_total);digits(40);decimals(5)" description:"总使用流量"`
+	Money       int       `orm:"column(u_money)" description:"金币"`
+	ProxyPasswd string    `orm:"column(u_proxy_passwd)" description:"代理连接密码"`
+	ReginIp     string    `orm:"column(r_ip)" description:"注册ip"`
 	// TableTime  time.Time `orm:"column(table_time);type(datetime);auto_now" description:"直接修改表的日期"`
 	CreateTime time.Time `orm:"column(create_time);type(datetime);auto_now_add" description:"创建日期"`
 	UpdateTime time.Time `orm:"column(update_time);type(timestamp);auto_now" description:"更新日期"`

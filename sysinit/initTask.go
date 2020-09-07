@@ -13,6 +13,14 @@ import (
 	"github.com/astaxie/beego/toolbox"
 )
 
+var lpBrookServer models.LpBrookServer
+
+func initServerInfo() {
+	o := orm.NewOrm()
+	//查询当前服务器类型
+	o.QueryTable(models.LpBrookServerTBName()).Filter("Id", beego.AppConfig.String("lp_brook_server_id")).One(&lpBrookServer)
+}
+
 func initTask() {
 	//初始化一个任务
 	tk1 := toolbox.NewTask("tk1", "0/30 * * * * *", uploadFlow)
@@ -37,11 +45,6 @@ func uploadFlow() error {
 	// 获取所有用户
 	lpBrookUserArr, err := models.GetLpBrookUserAll()
 	if err == nil {
-
-		o := orm.NewOrm()
-		var lpBrookServer models.LpBrookServer
-		//查询当前服务器类型
-		o.QueryTable(models.LpBrookServerTBName()).Filter("Id", beego.AppConfig.String("lp_brook_server_id")).One(&lpBrookServer)
 
 		for _, userInfo := range lpBrookUserArr {
 			portStr := fmt.Sprintf("%v", userInfo.Port)
@@ -96,10 +99,37 @@ func uploadFlow() error {
 
 				flowinputF64, _ := strconv.ParseFloat(flowinputStr, 64)
 				flowoutputF64, _ := strconv.ParseFloat(flowoutputStr, 64)
+
 				num := ((flowinputF64 + flowoutputF64) / 1048576) * lpBrookServer.FlowRatio //b -> mb * 流量比例
 
 				//更新用户流量
 				models.UpdateUserFlowById(userInfo.Id, num)
+
+				//获取今天的 月_日
+				month := int(time.Now().Month())
+				day := time.Now().Day()
+				month_day := fmt.Sprintf("%v_%v", month, day)
+
+				flowLog := make([]map[string][]float64, 0)
+				if err := utils.GetCache("flow_log_"+fmt.Sprintf("%v", userInfo.Id), &flowLog); err != nil { //获取ip数组
+					utils.SetCache("flow_log_"+fmt.Sprintf("%v", userInfo.Id), flowLog, 9999999) // 设置缓存
+				}
+
+				if len(flowLog) == 0 || len(flowLog) < 7 { //没有数据 或者 数据少于7天(不等于7天)
+					//追加今天的空数组
+					flowLog = append(flowLog, make(map[string][]float64))
+				} else if len(flowLog) == 7 && flowLog[6][month_day] == nil { //有7天的数据 并且 没有今天的数据
+					//删除切片的第一个数据
+					flowLog = append(flowLog[0:0], flowLog[1:]...)
+					//追加今天的空数组
+					flowLog = append(flowLog, make(map[string][]float64))
+				}
+
+				//今天的数组赋值
+				flowLog[len(flowLog)-1][month_day] = append(flowLog[len(flowLog)-1][month_day], num)
+
+				utils.SetCache("flow_log_"+fmt.Sprintf("%v", userInfo.Id), flowLog, 9999999) // 设置缓存
+
 			}
 
 		}

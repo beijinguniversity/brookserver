@@ -70,7 +70,7 @@ func OpenBrookServer(uid int) error {
 	code := utils.CheckPort(portStr) //判断linux端口是否被占用
 	if code == 0 {
 		fmt.Println("Open:", portStr)
-		brookServer, err := brook.NewServer(":"+portStr, lpBrookUser.Passwd, 0, 0) //创建服务
+		brookServer, err := brook.NewServer(":"+portStr, lpBrookUser.ProxyPasswd, 0, 0) //创建服务
 		if err != nil {
 			panic("brook服务器开启时失败-" + err.Error())
 		}

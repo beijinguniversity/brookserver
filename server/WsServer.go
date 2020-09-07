@@ -78,7 +78,7 @@ func OpenWsServer(uid int) error {
 	if code == 0 {
 		fmt.Println("Open:", portStr)
 		// addr, password, domain, path string, tcpTimeout, udpTimeout int
-		wsServer, err := brook.NewWSServer(":"+portStr, lpBrookUser.Passwd, serverInfo.Domain, path, 0, 0) //创建服务
+		wsServer, err := brook.NewWSServer(":"+portStr, lpBrookUser.ProxyPasswd, serverInfo.Domain, path, 0, 0) //创建服务
 		if err != nil {
 			panic("Ws服务器开启时失败-" + err.Error())
 		}

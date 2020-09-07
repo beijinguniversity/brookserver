@@ -28,9 +28,14 @@ brookserver
 
 4.修改conf/app.conf
 
-4.1.修改mysql配置
+4.1.配置mysql配置
 
 4.2.修改lp_brook_server_id(后端添加节点后的id)
+
+4.3.配置redis(web端安装的redis)
+
+4.3.配置remote(需要和web端一致)
+
 
 5.你需要把项目跑起来！
 
